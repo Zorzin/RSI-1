@@ -2,10 +2,17 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class MyServerImpl extends UnicastRemoteObject implements MyServerInt {
     int i = 0;
+    String serverName;
+    String clientName;
+
+    Queue<String> messageQueue = new LinkedList<>();
+
     protected MyServerImpl() throws RemoteException {
         super();
     }
@@ -106,5 +113,38 @@ public class MyServerImpl extends UnicastRemoteObject implements MyServerInt {
             e.printStackTrace();
         }
         return product;
+    }
+
+    public void setServerName(String name) throws RemoteException {
+        this.serverName = name;
+        if (this.serverName != null && this.clientName != null){
+            setInitMessage();
+        }
+    }
+
+    public void setClientName(String name) throws RemoteException {
+        this.clientName = name;
+        if (this.serverName != null && this.clientName != null){
+            setInitMessage();
+        }
+    }
+
+    public void sendClientMessage(String message) throws RemoteException {
+        System.out.println("[" + clientName + "] " + message);
+    }
+
+    public void sendServerMessage(String message) throws RemoteException {
+        messageQueue.add("[" + serverName + "] " +message);
+        System.out.println(message);
+    }
+
+    public String getMessage() throws RemoteException {
+        return messageQueue.poll();
+    }
+
+    private void setInitMessage(){
+        String message = "[Server] Chat remote system is ready";
+        messageQueue.add(message);
+        System.out.println(message);
     }
 }

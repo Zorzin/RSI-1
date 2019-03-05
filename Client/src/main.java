@@ -70,8 +70,24 @@ public class main {
         }
     }
 
-    private static void Chat(MyServerInt myRemoteObject) {
-
+    private static void Chat(MyServerInt myRemoteObject) throws RemoteException {
+        MessageChecker mc = new MessageChecker();
+        mc.start();
+        Scanner in;
+        String message;
+        System.out.println("Enter your name and press Enter:");
+        in = new Scanner(System.in);
+        String name = in.nextLine();
+        myRemoteObject.setClientName(name);
+        while (true)
+        {
+            in = new Scanner(System.in);
+            message = in.nextLine();
+            if (message != null && !message.isEmpty()){
+                System.out.println(message);
+                myRemoteObject.sendClientMessage(message);
+            }
+        }
     }
 
     private static void Calculator(MyServerInt myRemoteObject) throws RemoteException {

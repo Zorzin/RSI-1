@@ -8,4 +8,9 @@ public interface MyServerInt extends Remote{
     String calculator(String text) throws RemoteException;
     List<Product> getProducts() throws RemoteException, SQLException;
     Product getProductByName(String name) throws RemoteException, SQLException;
+    void setServerName(String name) throws RemoteException;
+    void setClientName(String name) throws RemoteException;
+    void sendClientMessage(String message) throws RemoteException;
+    void sendServerMessage(String message) throws RemoteException;
+    String getMessage() throws RemoteException;
 }
