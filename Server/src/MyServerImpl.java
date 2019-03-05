@@ -1,5 +1,8 @@
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyServerImpl extends UnicastRemoteObject implements MyServerInt {
     int i = 0;
@@ -43,54 +46,65 @@ public class MyServerImpl extends UnicastRemoteObject implements MyServerInt {
                 default:
                     break;
             }
-
-            /*int i=0;
-            for(;i<text.length(); i++) {
-                if( Character.isDigit(text.charAt(i)) || text.charAt(i) == '.' ) {
-                    aString += text.charAt(i);
-                } else {
-                    break;
-                }
-            }
-            for(;i<text.length(); i++) {
-                if( text.charAt(i) == '+' || text.charAt(i) == '-' || text.charAt(i) == '*' || text.charAt(i) == '/') {
-                    operation += text.charAt(i);
-                } else if( Character.isDigit(text.charAt(i)) ) {
-                    break;
-                }
-            }
-            for(;i<text.length(); i++) {
-                if( Character.isDigit(text.charAt(i)) || text.charAt(i) == '.' ) {
-                    bString += text.charAt(i);
-                } else {
-                    break;
-                }
-            }*/
-            //System.out.println("Value in a: " + as);
-            //System.out.println("Value in b: " + bs);
-            //System.out.println("Value in op: " + op);
-            /*ouble a = Double.parseDouble(aString);
-            double b = Double.parseDouble(bString);
-            switch (operation) {
-                case "+":
-                    result = String.valueOf(a + b);
-                    break;
-                case "-":
-                    result = String.valueOf(a - b);
-                    break;
-                case "*":
-                    result = String.valueOf(a * b);
-                    break;
-                case "/":
-                    result = String.valueOf(b == 0 ? 0 : a/b);
-                    break;
-                default:
-                    break;
-            }*/
         } else {
             result = "invalid format";
         }
         System.out.println("Sended to client:  " + result);
         return result;
+    }
+
+    @Override
+    public List<Product> getProducts() throws RemoteException {
+        List<Product> products = new ArrayList<>();
+
+        String dbUrl = "jdbc:sqlite:C:/Users/s.bakunowicz/RSIProjects/RMI/rmidb.db";
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(dbUrl);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Products;");
+
+            while ((resultSet.next())){
+                Product product = new Product();
+                product.id = resultSet.getInt("Id");
+                product.name = resultSet.getString("Name");
+                product.price =  resultSet.getDouble("Price");
+                products.add(product);
+            }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
+    @Override
+    public Product getProductByName(String name) throws RemoteException{
+        Product product = null;
+
+        String dbUrl = "jdbc:sqlite:C:/Users/s.bakunowicz/RSIProjects/RMI/rmidb.db";
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(dbUrl);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Products WHERE Name LIKE '%" + name + "%' LIMIT 1");
+
+            while ( resultSet.next() ) {
+                product = new Product();
+                product.id = resultSet.getInt("id");
+                product.name = resultSet.getString("name");
+                product.price =  resultSet.getDouble("price");
+            }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return product;
     }
 }
