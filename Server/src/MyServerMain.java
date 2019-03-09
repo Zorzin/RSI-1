@@ -11,7 +11,7 @@ public class MyServerMain {
     public static void main(String[] args) {
         try
         {
-            System.setProperty("java.rmi.server.hostname", "http://192.168.1.101");
+            //System.setProperty("java.rmi.server.hostname", "192.168.1.112");
             System.setProperty("java.security.policy", "security.policy");
 
             if (System.getSecurityManager() == null)
@@ -20,9 +20,9 @@ public class MyServerMain {
             }
 
             System.setProperty("java.rmi.server.codebase","file:C:/Users/s.bakunowicz/RSIProjects/RMIServer/out/production/Server/");
-            //System.setProperty("java.rmi.server.codebase", "192.168.1.101");
+            //System.setProperty("java.rmi.server.codebase", "http://192.168.1.102/szymon/");
             System.out.println("Codebase: " + System.getProperty("java.rmi.server.codebase"));
-            System.out.println("Ip: " + InetAddress.getLocalHost().getHostAddress());
+
             LocateRegistry.createRegistry(1099);
             MyServerImpl obj1 = new MyServerImpl();
             Naming.rebind("192.168.1.101", obj1);

@@ -64,7 +64,7 @@ public class MyServerImpl extends UnicastRemoteObject implements MyServerInt {
     public List<Product> getProducts() throws RemoteException {
         List<Product> products = new ArrayList<>();
 
-        String dbUrl = "jdbc:sqlite:C:/Users/s.bakunowicz/RSIProjects/RMI/rmidb.db";
+        String dbUrl = "jdbc:sqlite:D:/Studia/Semetr 8/Programowanie/RSI/RMI/RSI-1/rmidb.db";
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(dbUrl);
@@ -92,7 +92,7 @@ public class MyServerImpl extends UnicastRemoteObject implements MyServerInt {
     public Product getProductByName(String name) throws RemoteException{
         Product product = null;
 
-        String dbUrl = "jdbc:sqlite:C:/Users/s.bakunowicz/RSIProjects/RMI/rmidb.db";
+        String dbUrl = "jdbc:sqlite:D:/Studia/Semetr 8/Programowanie/RSI/RMI/RSI-1/rmidb.db";
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(dbUrl);
