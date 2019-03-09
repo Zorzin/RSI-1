@@ -25,7 +25,7 @@ public class MyServerMain {
 
             LocateRegistry.createRegistry(1099);
             MyServerImpl obj1 = new MyServerImpl();
-            Naming.rebind("192.168.1.101", obj1);
+            Naming.rebind("//localhost/ABC", obj1);
             System.out.println("Enter your name and press Enter:");
             Scanner in = new Scanner(System.in);
             String name = in.nextLine();
@@ -42,8 +42,6 @@ public class MyServerMain {
 
         } catch (RemoteException | MalformedURLException e)
         {
-            e.printStackTrace();
-        } catch (UnknownHostException e) {
             e.printStackTrace();
         }
     }
