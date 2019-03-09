@@ -9,7 +9,7 @@ public class main {
         System.setProperty("java.security.policy", "security.policy");
         System.setSecurityManager(new SecurityManager());
         try {
-            MyServerInt myRemoteObject = (MyServerInt) Naming.lookup("//localhost/ABC");
+            MyServerInt myRemoteObject = (MyServerInt) Naming.lookup("//192.168.1.112/ABC");
             String text = "Hallo :-)";
             String result = myRemoteObject.getDescription(text);
             System.out.println("Wysłano do servera: " + text);
