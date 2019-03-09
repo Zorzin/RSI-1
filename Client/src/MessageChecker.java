@@ -9,7 +9,7 @@ public class MessageChecker extends Thread {
         try {
             String message;
             while (true){
-                MyServerInt myRemoteObject = (MyServerInt) Naming.lookup("//192.168.1.112/ABC");
+                MyServerInt myRemoteObject = (MyServerInt) Naming.lookup("192.168.1.112/ABC");
                 message = myRemoteObject.getMessage();
                 if (message != null){
                     System.out.printf(message + "\n");
